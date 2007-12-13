@@ -28,6 +28,7 @@ main (int argc, char *argv[])
 
   add_pixmap_directory ("/usr/share/icons/Tango/scalable/apps");
   add_pixmap_directory ("/usr/share/icons/Tango/scalable/devices");
+  add_pixmap_directory (".");
 
   /*
    * The following code was added by Glade to create one of each component
