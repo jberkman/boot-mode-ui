@@ -1,0 +1,13 @@
+[Desktop Entry]
+Encoding=UTF-8
+Categories=GNOME;GTK;System;Settings;
+Exec=boot-mode-ui
+Icon=boot
+OnlyShowIn=GNOME;
+StartupNotify=true
+Terminal=false
+TryExec=boot-mode-ui
+Type=Application
+_Comment=Reboot into update mode
+_GenericName=Update Mode
+_Name=Update Mode

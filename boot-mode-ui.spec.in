@@ -1,0 +1,38 @@
+Summary: A graphical version of boot-mode
+Name: boot-mode-ui
+Version: @VERSION@
+Release: 1
+License: GPL
+Group: System/Tools
+URL: http://code.google.com/p/loolixbodes/wiki/BootModeUI
+Source0: %{name}-%{version}.tar.gz
+BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
+
+%description
+Boot Mode UI allows you to enable update mode without using a command
+line.
+
+%prep
+%setup -q
+
+%build
+%configure
+make
+
+%install
+rm -rf $RPM_BUILD_ROOT
+%makeinstall
+
+%clean
+rm -rf $RPM_BUILD_ROOT
+
+
+%files
+%defattr(-,root,root,-)
+%doc
+
+
+%changelog
+* Thu Dec 13 2007 jacob berkman <jberkman@novell.com>
+- Initial build.
+

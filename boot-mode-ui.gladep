@@ -3,7 +3,7 @@
 
 <glade-project>
   <name>Boot Mode</name>
-  <program_name>boot-mode</program_name>
+  <program_name>boot-mode-ui</program_name>
   <source_directory></source_directory>
   <pixmaps_directory></pixmaps_directory>
   <gnome_support>FALSE</gnome_support>
