@@ -33,15 +33,18 @@ create_window (void)
   GtkWidget *dialog_vbox1;
   GtkWidget *table1;
   GtkWidget *restart_button;
-  GtkWidget *normal_button;
-  GtkWidget *vbox2;
-  GtkWidget *image2;
-  GtkWidget *label3;
   GtkWidget *update_button;
+  GtkWidget *vbox2;
+  GtkWidget *update_image;
+  GtkWidget *label3;
+  GtkWidget *normal_button;
   GtkWidget *vbox1;
-  GtkWidget *image1;
+  GtkWidget *normal_image;
   GtkWidget *label2;
   GtkWidget *label1;
+  GtkWidget *warning_box;
+  GtkWidget *image3;
+  GtkWidget *label4;
   GtkWidget *dialog_action_area1;
   GtkWidget *close_button;
 
@@ -54,7 +57,7 @@ create_window (void)
   gtk_widget_set_name (dialog_vbox1, "dialog_vbox1");
   gtk_widget_show (dialog_vbox1);
 
-  table1 = gtk_table_new (3, 2, FALSE);
+  table1 = gtk_table_new (4, 2, FALSE);
   gtk_widget_set_name (table1, "table1");
   gtk_widget_show (table1);
   gtk_box_pack_start (GTK_BOX (dialog_vbox1), table1, TRUE, TRUE, 0);
@@ -69,48 +72,50 @@ create_window (void)
                     (GtkAttachOptions) (0),
                     (GtkAttachOptions) (0), 0, 0);
 
-  normal_button = gtk_toggle_button_new ();
-  gtk_widget_set_name (normal_button, "normal_button");
-  gtk_widget_show (normal_button);
-  gtk_table_attach (GTK_TABLE (table1), normal_button, 1, 2, 1, 2,
+  update_button = gtk_toggle_button_new ();
+  gtk_widget_set_name (update_button, "update_button");
+  gtk_widget_show (update_button);
+  gtk_table_attach (GTK_TABLE (table1), update_button, 1, 2, 1, 2,
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 20, 20);
 
   vbox2 = gtk_vbox_new (FALSE, 0);
   gtk_widget_set_name (vbox2, "vbox2");
   gtk_widget_show (vbox2);
-  gtk_container_add (GTK_CONTAINER (normal_button), vbox2);
+  gtk_container_add (GTK_CONTAINER (update_button), vbox2);
 
-  image2 = create_pixmap (window, "system-installer.svg");
-  gtk_widget_set_name (image2, "image2");
-  gtk_widget_show (image2);
-  gtk_box_pack_start (GTK_BOX (vbox2), image2, TRUE, TRUE, 0);
-  gtk_widget_set_size_request (image2, 64, 64);
+  update_image = gtk_image_new_from_icon_name ("system-installer", GTK_ICON_SIZE_DIALOG);
+  gtk_image_set_pixel_size (update_image, 128);
+  gtk_widget_set_name (update_image, "update_image");
+  gtk_widget_show (update_image);
+  gtk_box_pack_start (GTK_BOX (vbox2), update_image, TRUE, TRUE, 0);
+  gtk_widget_set_size_request (update_image, 128, 128);
 
-  label3 = gtk_label_new (_("Update Mode"));
+  label3 = gtk_label_new (_("Install Updates"));
   gtk_widget_set_name (label3, "label3");
   gtk_widget_show (label3);
   gtk_box_pack_start (GTK_BOX (vbox2), label3, FALSE, FALSE, 0);
 
-  update_button = gtk_toggle_button_new ();
-  gtk_widget_set_name (update_button, "update_button");
-  gtk_widget_show (update_button);
-  gtk_table_attach (GTK_TABLE (table1), update_button, 0, 1, 1, 2,
+  normal_button = gtk_toggle_button_new ();
+  gtk_widget_set_name (normal_button, "normal_button");
+  gtk_widget_show (normal_button);
+  gtk_table_attach (GTK_TABLE (table1), normal_button, 0, 1, 1, 2,
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 20, 20);
 
   vbox1 = gtk_vbox_new (FALSE, 0);
   gtk_widget_set_name (vbox1, "vbox1");
   gtk_widget_show (vbox1);
-  gtk_container_add (GTK_CONTAINER (update_button), vbox1);
+  gtk_container_add (GTK_CONTAINER (normal_button), vbox1);
 
-  image1 = create_pixmap (window, "computer.svg");
-  gtk_widget_set_name (image1, "image1");
-  gtk_widget_show (image1);
-  gtk_box_pack_start (GTK_BOX (vbox1), image1, TRUE, TRUE, 0);
-  gtk_widget_set_size_request (image1, 64, 64);
+  normal_image = gtk_image_new_from_icon_name ("computer", GTK_ICON_SIZE_BUTTON);
+  gtk_image_set_pixel_size (normal_image, 128);
+  gtk_widget_set_name (normal_image, "normal_image");
+  gtk_widget_show (normal_image);
+  gtk_box_pack_start (GTK_BOX (vbox1), normal_image, TRUE, TRUE, 0);
+  gtk_widget_set_size_request (normal_image, 128, 128);
 
-  label2 = gtk_label_new (_("Normal Mode"));
+  label2 = gtk_label_new (_("Boot to Desktop"));
   gtk_widget_set_name (label2, "label2");
   gtk_widget_show (label2);
   gtk_box_pack_start (GTK_BOX (vbox1), label2, FALSE, FALSE, 0);
@@ -124,6 +129,23 @@ create_window (void)
                     (GtkAttachOptions) (0), 0, 0);
   gtk_label_set_line_wrap (GTK_LABEL (label1), TRUE);
   gtk_misc_set_alignment (GTK_MISC (label1), 0, 0.5);
+
+  warning_box = gtk_hbox_new (FALSE, 0);
+  gtk_widget_set_name (warning_box, "warning_box");
+  gtk_table_attach (GTK_TABLE (table1), warning_box, 0, 2, 3, 4,
+                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
+
+  image3 = gtk_image_new_from_stock ("gtk-dialog-warning", GTK_ICON_SIZE_MENU);
+  gtk_widget_set_name (image3, "image3");
+  gtk_widget_show (image3);
+  gtk_box_pack_start (GTK_BOX (warning_box), image3, FALSE, TRUE, 0);
+
+  label4 = gtk_label_new (_("This system does not have the boot-mode tool installed."));
+  gtk_widget_set_name (label4, "label4");
+  gtk_widget_show (label4);
+  gtk_box_pack_start (GTK_BOX (warning_box), label4, FALSE, FALSE, 0);
+  gtk_label_set_line_wrap (GTK_LABEL (label4), TRUE);
 
   dialog_action_area1 = GTK_DIALOG (window)->action_area;
   gtk_widget_set_name (dialog_action_area1, "dialog_action_area1");
@@ -139,14 +161,11 @@ create_window (void)
   g_signal_connect ((gpointer) restart_button, "clicked",
                     G_CALLBACK (on_restart_button_clicked),
                     NULL);
-  g_signal_connect ((gpointer) normal_button, "clicked",
-                    G_CALLBACK (on_normal_button_clicked),
-                    NULL);
   g_signal_connect ((gpointer) update_button, "clicked",
                     G_CALLBACK (on_update_button_clicked),
                     NULL);
-  g_signal_connect ((gpointer) close_button, "clicked",
-                    G_CALLBACK (on_close_button_clicked),
+  g_signal_connect ((gpointer) normal_button, "clicked",
+                    G_CALLBACK (on_normal_button_clicked),
                     NULL);
 
   /* Store pointers to all widgets, for use by lookup_widget(). */
@@ -154,15 +173,18 @@ create_window (void)
   GLADE_HOOKUP_OBJECT_NO_REF (window, dialog_vbox1, "dialog_vbox1");
   GLADE_HOOKUP_OBJECT (window, table1, "table1");
   GLADE_HOOKUP_OBJECT (window, restart_button, "restart_button");
-  GLADE_HOOKUP_OBJECT (window, normal_button, "normal_button");
-  GLADE_HOOKUP_OBJECT (window, vbox2, "vbox2");
-  GLADE_HOOKUP_OBJECT (window, image2, "image2");
-  GLADE_HOOKUP_OBJECT (window, label3, "label3");
   GLADE_HOOKUP_OBJECT (window, update_button, "update_button");
+  GLADE_HOOKUP_OBJECT (window, vbox2, "vbox2");
+  GLADE_HOOKUP_OBJECT (window, update_image, "update_image");
+  GLADE_HOOKUP_OBJECT (window, label3, "label3");
+  GLADE_HOOKUP_OBJECT (window, normal_button, "normal_button");
   GLADE_HOOKUP_OBJECT (window, vbox1, "vbox1");
-  GLADE_HOOKUP_OBJECT (window, image1, "image1");
+  GLADE_HOOKUP_OBJECT (window, normal_image, "normal_image");
   GLADE_HOOKUP_OBJECT (window, label2, "label2");
   GLADE_HOOKUP_OBJECT (window, label1, "label1");
+  GLADE_HOOKUP_OBJECT (window, warning_box, "warning_box");
+  GLADE_HOOKUP_OBJECT (window, image3, "image3");
+  GLADE_HOOKUP_OBJECT (window, label4, "label4");
   GLADE_HOOKUP_OBJECT_NO_REF (window, dialog_action_area1, "dialog_action_area1");
   GLADE_HOOKUP_OBJECT (window, close_button, "close_button");
 

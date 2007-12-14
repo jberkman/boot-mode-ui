@@ -3,6 +3,7 @@
 bin_PROGRAMS += boot-mode-ui
 
 boot_mode_ui_SOURCES :=				\
+	bm.h					\
 	callbacks.c				\
 	callbacks.h				\
 	interface.c				\

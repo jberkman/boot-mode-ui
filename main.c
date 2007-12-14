@@ -7,10 +7,51 @@
 #  include <config.h>
 #endif
 
+#include "bm.h"
+
 #include <gtk/gtk.h>
 
 #include "interface.h"
 #include "support.h"
+
+BootMode bm;
+
+static int
+get_mode (void)
+{
+    GError *error = NULL;
+    char *standard_output;
+    char *standard_error;
+    int exit_status;
+    int retval;
+
+    if (!bm.has_bm) {
+        return NORMAL_MODE;
+    }
+
+    if (g_spawn_command_line_sync ("/usr/sbin/boot-mode --status",
+                                   &standard_output,
+                                   &standard_error,
+                                   &exit_status,
+                                   &error)) {
+        retval = STARTSWITH (standard_output, "update") ? UPDATE_MODE : NORMAL_MODE;
+    }
+    g_free (standard_output);
+    g_free (standard_error);
+    if (error) {
+        g_error_free (error);
+    }
+    return retval;
+}
+
+void
+update_boot_mode (void)
+{
+    g_spawn_command_line_async ((ISTOGGLED ("normal_button"))
+                                ? "/usr/sbin/boot-mode --no-update"
+                                : "/usr/sbin/boot-mode --update",
+                                NULL);
+}
 
 int
 main (int argc, char *argv[])
@@ -30,15 +71,30 @@ main (int argc, char *argv[])
   add_pixmap_directory ("/usr/share/icons/Tango/scalable/devices");
   add_pixmap_directory (".");
 
-  /*
-   * The following code was added by Glade to create one of each component
-   * (except popup menus), just so that you see something after building
-   * the project. Delete any components that you don't want shown initially.
-   */
-  window = create_window ();
-  gtk_widget_show (window);
+  bm.window = create_window ();
 
-  gtk_main ();
+  bm.has_bm = g_file_test ("/usr/sbin/boot-mode", G_FILE_TEST_IS_EXECUTABLE);
+  bm.mode = get_mode ();
+
+  bm.ignore_edits = TRUE;
+
+  gtk_image_set_pixel_size (GTK_IMAGE (WIDGET ("normal_image")), 128);
+  gtk_image_set_pixel_size (GTK_IMAGE (WIDGET ("update_image")), 128);
+
+  VISIBLE ("warning_box", !bm.has_bm);
+  ENABLED ("normal_button", bm.has_bm);
+  ENABLED ("update_button", bm.has_bm);
+  TOGGLED ("normal_button", bm.mode == NORMAL_MODE);
+  TOGGLED ("update_button", bm.mode == UPDATE_MODE);
+
+  bm.ignore_edits = FALSE;
+
+  gtk_dialog_run (GTK_DIALOG (bm.window));
+
+  if (bm.mode != (ISTOGGLED ("normal_button") ? NORMAL_MODE : UPDATE_MODE)) {
+      update_boot_mode ();
+  }
+  
   return 0;
 }
 

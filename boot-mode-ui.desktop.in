@@ -2,7 +2,7 @@
 Encoding=UTF-8
 Categories=GNOME;GTK;System;Settings;
 Exec=boot-mode-ui
-Icon=boot
+Icon=system-installer
 OnlyShowIn=GNOME;
 StartupNotify=true
 Terminal=false
