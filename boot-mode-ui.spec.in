@@ -32,6 +32,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc
 %{_bindir}/boot-mode-ui
 %{_datadir}/applications/boot-mode-ui.desktop
+%{_datadir}/locale/*/LC_MESSAGES/boot-mode-ui.mo
 
 %changelog
 * Thu Dec 13 2007 jacob berkman <jberkman@novell.com>
